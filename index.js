@@ -65,6 +65,8 @@
     this.createElements = true;
     this.forceGemini = false;
     this.onResize = null;
+    this.onCursorDown = null;
+    this.onCursorUp = null;
     this.minThumbSize = 20;
 
     Object.keys(config || {}).forEach(function (propertyName) {
@@ -375,6 +377,7 @@
 
   GeminiScrollbar.prototype._startDrag = function _startDrag(e) {
     this._cursorDown = true;
+    this.onCursorDown && this.onCursorDown();
     addClass(document.body, [CLASSNAMES.disable]);
     this._document.addEventListener('mousemove', this._cache.events.mouseMoveDocumentHandler);
     this._document.onselectstart = function() {return false;};
@@ -382,6 +385,7 @@
 
   GeminiScrollbar.prototype._mouseUpDocumentHandler = function _mouseUpDocumentHandler() {
     this._cursorDown = false;
+    this.onCursorUp && this.onCursorUp();
     this._prevPageX = this._prevPageY = 0;
     removeClass(document.body, [CLASSNAMES.disable]);
     this._document.removeEventListener('mousemove', this._cache.events.mouseMoveDocumentHandler);
